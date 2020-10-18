@@ -1,30 +1,18 @@
 /* eslint-disable linebreak-style */
 const request = require('supertest');
 const { app, mongoose } = require('../app.js');
+const Category = require('../models/Category');
 
-// beforeAll((done) => {
-//   if (mongoose.connection.collections.product) {
-//     mongoose.connection.collections.product.deleteMany({}, () => {
-//       done();
-//     });
-//   }
-// });
-// beforeAll((done) => {
-//   if (mongoose.connection.collections.category) {
-//     mongoose.connection.collections.category.deleteMany({}, () => {
-//       done();
-//     });
-//   }
-// });
+function cleanUpDatabase() {
+  if (mongoose.connection.collections.categories) {
+    mongoose.connection.collections.categories.deleteMany({}, () => {
+    });
+  }
+}
 
-describe('GET /', () => {
-  it('should return 200 OK', (done) => {
-    request(app)
-      .get('/api/v1/product')
-      .expect(200, done);
-  });
+afterAll(() => {
+  cleanUpDatabase();
 });
-
 describe('POST /api/v1/product', () => {
   it('should return 500', (done) => {
     request(app)
@@ -36,13 +24,11 @@ describe('POST /api/v1/product', () => {
   });
 });
 
-describe('POST /api/v1/category', () => {
-  it('should create a new category', (done) => {
-    request(app)
-      .post('/api/v1/category')
-      .send({ name: 'product1' })
-      .set('Accept', 'application/json')
-      .expect('Content-Type', /json/)
-      .expect(201, done);
-  });
+it('should create a new category', (done) => {
+  request(app)
+    .post('/api/v1/category')
+    .send({ name: 'category' })
+    .set('Accept', 'application/json')
+    .expect('Content-Type', /json/)
+    .expect(201, done);
 });
