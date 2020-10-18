@@ -27,7 +27,7 @@ describe('POST /api/v1/product', () => {
 it('should create a new category', (done) => {
   request(app)
     .post('/api/v1/category')
-    .send({ name: 'category' })
+    .send({ name: 'category', _id: '124' })
     .set('Accept', 'application/json')
     .expect('Content-Type', /json/)
     .expect(201, done);
