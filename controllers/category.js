@@ -15,7 +15,6 @@ exports.addCategory = async function (req, res) {
   name = validator.escape(name);
 
   Category.find({ name }).then((category) => {
-    console.log(category);
     if (category && category.length) {
       return ErrorResponse(res, 'Cateory Already Exists');
     }

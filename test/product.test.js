@@ -3,24 +3,18 @@ const request = require('supertest');
 const { app, mongoose } = require('../app.js');
 
 // beforeAll((done) => {
-//   const { connection } = mongoose;
-//   connection.once('open', () => {
-//     console.log('MongoDB connected successfully');
-//     connection.db.listCollections().toArray((err, names) => {
-//       if (err) {
-//         console.log(err);
-//       } else {
-//         for (let i = 0; i < names.length; i++) {
-//           console.log(names[i].name);
-//           if ((names[i].name === 'product')) {
-//             connection.db.dropCollection('product', () => {
-//               done();
-//             });
-//           }
-//         }
-//       }
+//   if (mongoose.connection.collections.product) {
+//     mongoose.connection.collections.product.deleteMany({}, () => {
+//       done();
 //     });
-//   });
+//   }
+// });
+// beforeAll((done) => {
+//   if (mongoose.connection.collections.category) {
+//     mongoose.connection.collections.category.deleteMany({}, () => {
+//       done();
+//     });
+//   }
 // });
 
 describe('GET /', () => {
@@ -39,5 +33,16 @@ describe('POST /api/v1/product', () => {
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .expect(500, done);
+  });
+});
+
+describe('POST /api/v1/category', () => {
+  it('should create a new category', (done) => {
+    request(app)
+      .post('/api/v1/category')
+      .send({ name: 'product1' })
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect(201, done);
   });
 });
